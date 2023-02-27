@@ -9,6 +9,11 @@ import (
 // 测试脚本
 func TestSnowFlake(t *testing.T) {
 
+	//for true {
+	//	fmt.Println(time.Now().Format("2006-01-02 15:04:05"))
+	//	time.Sleep(1 * time.Second)
+	//}
+
 	// 生成节点实例
 	worker, err := NewWorker(1)
 
