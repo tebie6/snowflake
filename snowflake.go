@@ -81,3 +81,7 @@ func (w *Worker) GetId() int64 {
 	ID := ((now - startTime) << timeShift) | (w.workerId << workerShift) | (w.number)
 	return ID
 }
+
+func (w *Worker) GetLastTimestamp() int64 {
+	return w.lastTimestamp
+}
