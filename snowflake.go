@@ -85,3 +85,7 @@ func (w *Worker) GetId() int64 {
 func (w *Worker) GetLastTimestamp() int64 {
 	return w.lastTimestamp
 }
+
+func (w *Worker) GetWorkerId() int64 {
+	return w.workerId
+}
