@@ -17,7 +17,7 @@ const (
 	numberMax   int64 = -1 ^ (-1 << numberBits) // 序列号的最大值 4095
 	timeShift   uint8 = workerBits + numberBits // 时间戳左移偏移量
 	workerShift uint8 = numberBits              // 机器节点ID左移偏移量
-	startTime         = 1677120439894605        // 记录开始时间（毫秒），一旦定义则不能修改，修改后会生成重复ID
+	startTime         = 1681288475388           // 记录开始时间（毫秒），一旦定义则不能修改，修改后会生成重复ID
 )
 
 type Worker struct {
@@ -53,7 +53,8 @@ func (w *Worker) GetId() int64 {
 
 	// 生成时间戳（毫秒）- 从 go 的 1.17（含）版本后，官方提供了直接获取毫秒,微秒值的方法
 	// 1.17 之前版本使用 time.Now().UnixNano() / 1e6
-	now := time.Now().UnixMicro()
+	// now := time.Now().UnixMicro() go这个坑货，返回值是毫秒+纳秒，位数不对
+	now := time.Now().UnixNano() / 1e6
 
 	// 判断最后时间是否为当前时间
 	var reset bool
@@ -78,7 +79,7 @@ func (w *Worker) GetId() int64 {
 	}
 
 	// now - startTime，如果使用当前时间那么时间只能用到2039年，导致浪费，所以做了一个差值处理，比如你的startTime是2023年 那么你就可以用到 2092年
-	ID := ((now - startTime) << timeShift) | (w.workerId << workerShift) | (w.number)
+	ID := ((now - startTime) << (timeShift - 0)) | (w.workerId << workerShift) | (w.number)
 	return ID
 }
 
